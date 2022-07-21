@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import './App.css';
+import './App.scss';
 import PasswordGenerator from "./PasswordGenerator/PasswordGenerator";
 
 export type PasswordStateType = {

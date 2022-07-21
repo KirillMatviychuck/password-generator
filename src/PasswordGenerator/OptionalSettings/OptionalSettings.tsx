@@ -1,5 +1,5 @@
 import React, {ChangeEvent} from "react";
-import classNew from './OptionalSettings.module.css'
+import classNew from './OptionalSettings.module.scss'
 
 type OptionalSettingsPropsType = {
     title: string

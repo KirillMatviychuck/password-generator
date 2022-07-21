@@ -1,7 +1,9 @@
 import React, {ChangeEvent, Dispatch, SetStateAction, useState} from "react";
 import {PasswordStateType} from "../App";
-import classNew from './PasswordGenerator.module.css'
+import classNew from './PasswordGenerator.module.scss'
 import {OptionalSettings} from "./OptionalSettings/OptionalSettings";
+import clipboardImg from '../assets/clipboard/clipboard.png'
+import {CopyToClipboard} from 'react-copy-to-clipboard'
 
 type PropsType = {
     mainState: PasswordStateType[]
@@ -13,6 +15,10 @@ function PasswordGenerator(props: PropsType) {
     let [passwordLength, setPasswordLength] = useState(8)
     let [passwordContainer, setPasswordContainer] = useState('')
     let [countOfChosenOptions, setCountOfInclusions] = useState(0)
+
+    const clipboard = {
+        backgroundImage: `url(${clipboardImg})`,
+    }
 
     function changeCheckMark(optionId: string, value: boolean) {
         let checkMarkToChange = props.mainState.find(t => t.id === optionId)
@@ -32,7 +38,7 @@ function PasswordGenerator(props: PropsType) {
     const onGeneratorButtonClick = () => {
         let num: number = passwordLength
         if (countOfChosenOptions < 1) {
-            setPasswordContainer('select at least one option')
+            setPasswordContainer('select some values')
             return;
         }
         const filteredState = props.mainState.filter(s => s.needOrNot)
@@ -43,9 +49,15 @@ function PasswordGenerator(props: PropsType) {
     return (
         <div className={classNew.container}>
             <h2 className={classNew.title}>Password Generator</h2>
+
             <div className={classNew.spaceForPassword}>
-                {passwordContainer}
+                <div className={classNew.passwordValue}>{passwordContainer}</div>
+                <CopyToClipboard text={passwordContainer}>
+                    <div className={classNew.clipboardButton} style={clipboard}
+                         onClick={() => alert(`Your password copied: ${passwordContainer}`)}></div>
+                </CopyToClipboard>
             </div>
+
 
             <div className={classNew.options}>
 
@@ -60,16 +72,17 @@ function PasswordGenerator(props: PropsType) {
                                              changeStatusHandler={changeStatusHandler}/>
                 })}
             </div>
-
-            <div className={classNew.rangeWrap}>
-                <div className={classNew.rangeValues}>3</div>
-                <div className={classNew.inputArea}><input type="range"
-                                                           className={classNew.rangeArea}
-                                                           min="3" max="15"
-                                                           value={passwordLength}
-                                                           onChange={onValueChangeHandler}
-                                                           step="1"/></div>
-                <div className={classNew.rangeValues}>{passwordLength}</div>
+            <div className={classNew.passwordLengthArea}>
+                <div className={classNew.passwordLength}>Password length</div>
+                <div className={classNew.rangeWrap}>
+                    <div className={classNew.inputArea}><input type="range"
+                                                               className={classNew.rangeArea}
+                                                               min="3" max="15"
+                                                               value={passwordLength}
+                                                               onChange={onValueChangeHandler}
+                                                               step="1"/></div>
+                    <div className={classNew.rangeValues}>{passwordLength}</div>
+                </div>
             </div>
 
             <div className={classNew.buttonArea}>
