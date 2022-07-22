@@ -54,7 +54,9 @@ function PasswordGenerator(props: PropsType) {
                 <div className={classNew.passwordValue}>{passwordContainer}</div>
                 <CopyToClipboard text={passwordContainer}>
                     <div className={classNew.clipboardButton} style={clipboard}
-                         onClick={() => alert(`Your password copied: ${passwordContainer}`)}></div>
+                         onClick={() => alert(`Your password copied: ${passwordContainer}`)}>
+
+                    </div>
                 </CopyToClipboard>
             </div>
 
