@@ -4,14 +4,17 @@ import classNew from './PasswordGenerator.module.scss'
 import {OptionalSettings} from "./OptionalSettings/OptionalSettings";
 import clipboardImg from '../assets/clipboard/clipboard.png'
 import {CopyToClipboard} from 'react-copy-to-clipboard'
+import ModalNotification from "../ModalNotification/ModalNotification";
 
 type PropsType = {
     mainState: PasswordStateType[]
     setMainState: Dispatch<SetStateAction<PasswordStateType[]>>
     createPassword: (types: Array<string>, passwordLength: number) => string
+    modalMode: boolean
+    setModalMode: Dispatch<SetStateAction<boolean>>
 }
 
-function PasswordGenerator(props: PropsType) {
+const PasswordGenerator: React.FC<PropsType> = ({mainState, setMainState, modalMode, setModalMode, createPassword}) => {
     let [passwordLength, setPasswordLength] = useState(8)
     let [passwordContainer, setPasswordContainer] = useState('')
     let [countOfChosenOptions, setCountOfInclusions] = useState(0)
@@ -21,12 +24,12 @@ function PasswordGenerator(props: PropsType) {
     }
 
     function changeCheckMark(optionId: string, value: boolean) {
-        let checkMarkToChange = props.mainState.find(t => t.id === optionId)
+        let checkMarkToChange = mainState.find(t => t.id === optionId)
         if (checkMarkToChange) {
             checkMarkToChange.needOrNot = value
-            props.setMainState([...props.mainState])
+            setMainState([...mainState])
         }
-        countOfChosenOptions = props.mainState.filter(n => n.needOrNot).length
+        countOfChosenOptions = mainState.filter(n => n.needOrNot).length
         setCountOfInclusions(countOfChosenOptions)
     }
 
@@ -41,9 +44,17 @@ function PasswordGenerator(props: PropsType) {
             setPasswordContainer('select some values')
             return;
         }
-        const filteredState = props.mainState.filter(s => s.needOrNot)
+        const filteredState = mainState.filter(s => s.needOrNot)
         const types = filteredState.map(t => t.type)
-        setPasswordContainer(props.createPassword(types, num))
+        setPasswordContainer(createPassword(types, num))
+    }
+    const setModalModeHandler = () => {
+        if (passwordContainer) {
+            setModalMode(true)
+            setTimeout(() => {
+                setModalMode(false)
+            }, 1500)
+        }
     }
 
     return (
@@ -54,15 +65,16 @@ function PasswordGenerator(props: PropsType) {
                 <div className={classNew.passwordValue}>{passwordContainer}</div>
                 <CopyToClipboard text={passwordContainer}>
                     <div className={classNew.clipboardButton} style={clipboard}
-                         onClick={() => alert(`Your password is copied: ${passwordContainer}`)}>
+                         onClick={setModalModeHandler}
+                         onBlur={() => setModalMode(false)}>
                     </div>
                 </CopyToClipboard>
             </div>
-
-
+            <div className={classNew.copiedField}>
+                {modalMode && <ModalNotification/>}
+            </div>
             <div className={classNew.options}>
-
-                {props.mainState.map(t => {
+                {mainState.map(t => {
                     const changeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
                         changeCheckMark(t.id, e.currentTarget.checked)
                     }
@@ -90,6 +102,7 @@ function PasswordGenerator(props: PropsType) {
                 <button className={classNew.button} onClick={onGeneratorButtonClick}>Generate password</button>
             </div>
         </div>
+
     )
 }
 

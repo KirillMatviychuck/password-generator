@@ -1,0 +1,9 @@
+.modalBackground {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 280px;
+    height: 40px;
+    background-color: #eedcc0;
+    border-radius: 10px;
+}

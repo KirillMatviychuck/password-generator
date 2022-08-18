@@ -48,6 +48,7 @@ function App() {
         {id: '3', title: 'Includes numbers', type: 'number', needOrNot: false},
         {id: '4', title: 'Includes symbols', type: 'symbol', needOrNot: false}
     ])
+    let [modalMode, setModalMode] = useState(false)
 
     function createPassword(types: Array<string>, passwordLength: number): string {
         let password = '';
@@ -63,7 +64,9 @@ function App() {
         <div className="App">
             <PasswordGenerator mainState={mainState}
                                setMainState={setMainState}
-                               createPassword={createPassword}/>
+                               createPassword={createPassword}
+                               modalMode={modalMode}
+                               setModalMode={setModalMode}/>
         </div>
     );
 }
