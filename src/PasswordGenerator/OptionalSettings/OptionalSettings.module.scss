@@ -8,3 +8,11 @@
     align-items: center;
     margin: 8px 0;
 }
+
+.optionCheckbox {
+    accent-color: #eedcc0;
+}
+
+//input[type="checkbox"] { /* change "blue" browser chrome to yellow */
+//    filter: invert(100%) hue-rotate(18deg) brightness(1.7);
+//}

@@ -9,7 +9,7 @@ type OptionalSettingsPropsType = {
 
 const OptionalSettings: React.FC<OptionalSettingsPropsType> = ({title, status, changeStatusHandler}) => {
     return <div className={classNew.setting}>
-        <input type={'checkbox'}
+        <input className={classNew.optionCheckbox} type={'checkbox'}
                checked={status}
                onChange={changeStatusHandler}/>
         {title}
